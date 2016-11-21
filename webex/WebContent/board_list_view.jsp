@@ -44,9 +44,9 @@
 					}
 				%>
 			</table>
-				<div align="right">
+			<div align="right">
 				<input class="btn" type="button" value="±ÛÀÛ¼º" onclick="window.location.href='board_write_view.do'">
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>

@@ -13,6 +13,7 @@ import com.board.command.BCommand;
 import com.board.command.BContentCommand;
 import com.board.command.BDeleteCommand;
 import com.board.command.BListCommand;
+import com.board.command.BUpdateCommand;
 import com.board.command.BWriteCommand;
 import com.member.command.CCommand;
 import com.member.command.CDeleteCommand;
@@ -113,10 +114,14 @@ public class CFrontController extends HttpServlet {
 			bCommand = new BDeleteCommand();
 			bCommand.execute(request, response);
 			viewPage = "board_list_view.do";
-		} else if(comStr.equals("/board_list_view.do")){
-			
-		} else if(comStr.equals("/board_list_view.do")){
-			
+		} else if(comStr.equals("/board_modify_view.do")){
+			bCommand = new BContentCommand();
+			bCommand.execute(request, response);
+			viewPage = "board_modify_view.jsp";
+		} else if(comStr.equals("/board_modify.do")){
+			bCommand = new BUpdateCommand();
+			bCommand.execute(request, response);
+			viewPage = "board_content_view.do";
 		}
 		//클라이언트로부터 받은 request, response를 포워딩
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

@@ -19,6 +19,8 @@ public class BoardDao {
 	public static final int BOARD_HITUP_FAIL = 0;
 	public static final int BOARD_DELETE_SUCCESS = 1;
 	public static final int BOARD_DELETE_FAIL = 0;
+	public static final int BOARD_UPDATE_SUCCESS = 1;
+	public static final int BOARD_UPDATE_FAIL = 0;
 	
 	private static BoardDao instance = new BoardDao(); 
 	
@@ -93,17 +95,17 @@ public class BoardDao {
 	}
 
 	
-	public int write(String bid, String btitle, String bcontent) {
+	public int write(String bname, String btitle, String bcontent) {
 		// TODO Auto-generated method stub
-			int check=BOARD_WRITE_FAIL;
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-			String query = "insert into boardex values(seq_bid.nextval, ?, ?, ?, default, 0, seq_bid.currval, 0, 0)";
+		int check=BOARD_WRITE_FAIL;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "insert into boardex values(seq_bid.nextval, ?, ?, ?, default, 0, seq_bid.currval, 0, 0)";
 			
 		try {
 			connection = getConnect();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, bid);
+			preparedStatement.setString(1, bname);
 			preparedStatement.setString(2, btitle);
 			preparedStatement.setString(3, bcontent);
 			check = preparedStatement.executeUpdate();	
@@ -186,6 +188,36 @@ public class BoardDao {
 			try {
 				if(preparedStatement!=null) preparedStatement.close();
 				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		return check;
+	}
+	
+	public int update(String bid, String bname, String btitle, String bcontent) {
+		// TODO Auto-generated method stub
+		int check=BOARD_UPDATE_FAIL;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "update boardex set bname=?, btitle=?, bcontent=? where bid=?";
+			
+		try {
+			connection = getConnect();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, bname);
+			preparedStatement.setString(2, btitle);
+			preparedStatement.setString(3, bcontent);
+			preparedStatement.setString(4, bid);
+			check = preparedStatement.executeUpdate();	
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement!=null) preparedStatement.close();
+				if(connection!=null) connection.close();				
 			} catch (Exception e2) {
 				// TODO: handle exception
 				e2.printStackTrace();
