@@ -21,6 +21,8 @@ public class BoardDao {
 	public static final int BOARD_DELETE_FAIL = 0;
 	public static final int BOARD_UPDATE_SUCCESS = 1;
 	public static final int BOARD_UPDATE_FAIL = 0;
+	public static final int BOARD_REPLY_SUCCESS = 1;
+	public static final int BOARD_REPLY_FAIL = 0;
 	
 	private static BoardDao instance = new BoardDao(); 
 	
@@ -57,7 +59,7 @@ public class BoardDao {
 		ResultSet resultSet = null;
 		BoardDto dto = null;
 		ArrayList<BoardDto> dtos = null;
-		String query = "select bid, bname, btitle, bcontent, bdate, bhit, bgroup, bstep, bindent from boardex order by bid desc";
+		String query = "select bid, bname, btitle, bcontent, bdate, bhit, bgroup, bstep, bindent from boardex order by bgroup desc, bstep asc";
 		try {
 			connection = getConnect();
 			preparedStatement = connection.prepareStatement(query);
@@ -223,6 +225,40 @@ public class BoardDao {
 				e2.printStackTrace();
 			}
 		}
+		return check;
+	}
+	
+	public int reply(String bname, String btitle, String bcontent, String bgroup, String bstep, String bindent) {
+		// TODO Auto-generated method stub
+		int check=BOARD_REPLY_FAIL;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "insert into boardex values(seq_bid.nextval, ?, ?, ?, default, 0, ?, ?, ?)";
+			System.out.println("2");
+		try {
+			connection = getConnect();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, bname);
+			preparedStatement.setString(2, btitle);
+			preparedStatement.setString(3, bcontent);
+			preparedStatement.setString(4, bgroup);
+			preparedStatement.setInt(5, Integer.parseInt(bstep)+1);
+			preparedStatement.setInt(6, Integer.parseInt(bindent)+1);
+			check = preparedStatement.executeUpdate();	
+			System.out.println("3");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement!=null) preparedStatement.close();
+				if(connection!=null) connection.close();				
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		
 		return check;
 	}
 	

@@ -34,7 +34,8 @@
 				</tr>
 				</table>
 				<div align="right">
-					<input class="btn" type="submit" value="입력"></td>				
+					<input class="btn" type="submit" value="입력">
+					<input class="btn" type="button" value="취소" onclick="window.location.href='board_list_view.do'">				
 				</div>	
 			</form>
 			</div>

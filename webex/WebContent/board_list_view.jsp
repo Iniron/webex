@@ -35,7 +35,11 @@
 				<tr align="center">
 					<td><%=dtos.get(i).getBid()%></td>
 					<td><%=dtos.get(i).getBname()%></td>
-					<td align="left"><a href="board_content_view.do?bid=<%=dtos.get(i).getBid() %>"><%=dtos.get(i).getBtitle()%></a></td>
+					<td align="left">
+						<a href="board_content_view.do?bid=<%=dtos.get(i).getBid() %>">
+						<%for(int j=0; j<dtos.get(i).getBstep(); j++){out.println("&nbsp;&nbsp;&nbsp;");}%>			
+						<%=dtos.get(i).getBtitle()%></a>
+					</td>
 					<td><%=dtos.get(i).getBdate()%></td>
 					<td><%=dtos.get(i).getBhit()%></td>
 				</tr>
