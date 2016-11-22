@@ -234,7 +234,9 @@ public class BoardDao {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		String query = "insert into boardex values(seq_bid.nextval, ?, ?, ?, default, 0, ?, ?, ?)";
-			System.out.println("2");
+		
+		replyStep(bgroup, bstep);
+		
 		try {
 			connection = getConnect();
 			preparedStatement = connection.prepareStatement(query);
@@ -245,7 +247,6 @@ public class BoardDao {
 			preparedStatement.setInt(5, Integer.parseInt(bstep)+1);
 			preparedStatement.setInt(6, Integer.parseInt(bindent)+1);
 			check = preparedStatement.executeUpdate();	
-			System.out.println("3");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -260,6 +261,32 @@ public class BoardDao {
 		}
 		
 		return check;
+	}
+	
+	private void replyStep(String bgroup, String bstep) {
+		// TODO Auto-generated method stub
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "update boardex set bstep = bstep + 1 where bgroup = ? and bstep > ?";
+		try {
+			connection = getConnect();			
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, Integer.parseInt(bgroup));
+			preparedStatement.setInt(2, Integer.parseInt(bstep));
+			preparedStatement.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null) preparedStatement.close();
+				if(connection != null) connection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
 	}
 	
 	private int hitup(String bid) {

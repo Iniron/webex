@@ -16,13 +16,11 @@ public class BReplyCommand implements BCommand {
 		String bgroup = request.getParameter("bgroup");
 		String bstep = request.getParameter("bstep");
 		String bindent = request.getParameter("bindent");
-		System.out.println("1");
 		
 		BoardDao dao = BoardDao.getInstance();
 		
 		if(dao.reply(bname, btitle, bcontent, bgroup, bstep, bindent)==BoardDao.BOARD_REPLY_SUCCESS){
 			request.setAttribute("success_msg", "게시글에 답변을 입력하였습니다.");
-			System.out.println("4");
 		} else{
 			request.setAttribute("error_msg", "답변을 입력을 실패하였습니다.");
 		}

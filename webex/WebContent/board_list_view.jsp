@@ -37,7 +37,7 @@
 					<td><%=dtos.get(i).getBname()%></td>
 					<td align="left">
 						<a href="board_content_view.do?bid=<%=dtos.get(i).getBid() %>">
-						<%for(int j=0; j<dtos.get(i).getBstep(); j++){out.println("&nbsp;&nbsp;&nbsp;");}%>			
+						<%for(int j=0; j<dtos.get(i).getBindent(); j++){out.println("&nbsp;&nbsp;&nbsp;");}%>			
 						<%=dtos.get(i).getBtitle()%></a>
 					</td>
 					<td><%=dtos.get(i).getBdate()%></td>
@@ -48,8 +48,29 @@
 					}
 				%>
 			</table>
-			<div align="right">
-				<input class="btn" type="button" value="글작성" onclick="window.location.href='board_write_view.do'">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div align="center" class="col-md-8">
+					<nav>
+					  <ul class="pagination">
+					    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+					    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+					    <li><a href="#">2</a></li>
+					    <li><a href="#">3</a></li>
+					    <li><a href="#">4</a></li>
+					    <li><a href="#">5</a></li>
+					    <li>
+					      <a href="#" aria-label="Next">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+					  </ul>
+					</nav>
+				</div>
+				
+				<div class="col-md-2">
+					<input class="btn" type="button" value="글작성" onclick="window.location.href='board_write_view.do'">
+				</div>
 			</div>
 			</div>
 		</div>
