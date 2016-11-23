@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import com.board.dto.BoardDto;
 
@@ -23,6 +24,7 @@ public class BoardDao {
 	public static final int BOARD_UPDATE_FAIL = 0;
 	public static final int BOARD_REPLY_SUCCESS = 1;
 	public static final int BOARD_REPLY_FAIL = 0;
+	public static final int BOARD_NO_COUNT = 0;
 	
 	private static BoardDao instance = new BoardDao(); 
 	
@@ -52,17 +54,58 @@ public class BoardDao {
 		return connection;
 	}
 	
-	public ArrayList<BoardDto> getList() {
+	public int getListCount() {
+		// TODO Auto-generated method stub
+		int count=BOARD_NO_COUNT;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;getClass();
+		ResultSet resultSet = null;
+		String query = "select count(*) from boardex";
+		
+		try {
+			connection = getConnect();
+			preparedStatement = connection.prepareStatement(query);
+			resultSet = preparedStatement.executeQuery();
+			
+			if(resultSet.next()){
+				count = resultSet.getInt(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(resultSet!=null) resultSet.close();
+				if(preparedStatement!=null) preparedStatement.close();
+				if(connection!=null) connection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		return count;
+	}
+	
+	public ArrayList<BoardDto> getList(int nowpage, int limit) {
 		// TODO Auto-generated method stub
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		BoardDto dto = null;
 		ArrayList<BoardDto> dtos = null;
-		String query = "select bid, bname, btitle, bcontent, bdate, bhit, bgroup, bstep, bindent from boardex order by bgroup desc, bstep asc";
+		String query = 	"select * "+
+						"from (select rownum as rno, bid, bname, btitle, bcontent, bdate, bhit, bgroup, bstep, bindent "+
+						"from (select * from boardex order by bgroup desc, bstep asc)) "+
+						"where rno between ? and ?";
+		
+		int firstlist = (nowpage-1)*limit+1;
+		int lastlist = firstlist+limit-1;
+		System.out.println("firstlist= "+firstlist);
+		System.out.println("lastlist= "+lastlist);
+		
 		try {
 			connection = getConnect();
 			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, firstlist);
+			preparedStatement.setInt(2, lastlist);
 			resultSet = preparedStatement.executeQuery();
 			dtos = new ArrayList<BoardDto>();
 			while(resultSet.next()){
@@ -95,7 +138,6 @@ public class BoardDao {
 		}
 		return dtos;
 	}
-
 	
 	public int write(String bname, String btitle, String bcontent) {
 		// TODO Auto-generated method stub

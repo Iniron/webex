@@ -52,18 +52,30 @@
 				<div class="col-md-2"></div>
 				<div align="center" class="col-md-8">
 					<nav>
-					  <ul class="pagination">
-					    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-					    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-					    <li><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li>
-					    <li><a href="#">5</a></li>
-					    <li>
-					      <a href="#" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
+						<ul class="pagination">
+					  	<% 
+							int nowpage = (Integer)request.getAttribute("nowpage");
+					  		int firstpage = (Integer)request.getAttribute("firstpage");
+				      		int lastpage = (Integer)request.getAttribute("lastpage");
+				      		
+					  		if(nowpage<=1){
+					 	%>
+						  	<li class="disabled"><span><span aria-hidden="true">&laquo;</span></span></li>
+						<% } else{ %>
+						  	<li><a href="board_list_view.do?nowpage=<%=nowpage-1%>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+						<% } 
+					    	for(int k=firstpage; k<=lastpage; k++){
+					    	if(k==nowpage){ %>
+					    		<li class="active"><span><%=k%><span class="sr-only">(current)</span></span></li>	
+					    <% continue; } %>
+					    	<li><a href="board_list_view.do?nowpage=<%=k%>"><%=k%></a></li>
+					    <% } 
+					    	if(nowpage>=lastpage){
+					    %>
+					    	<li class="disabled"><span><span aria-hidden="true">&raquo;</span></span></li>
+					    <% } else{ %>
+					    	<li><a href="board_list_view.do?nowpage=<%=nowpage+1%>" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+					    <% } %>
 					  </ul>
 					</nav>
 				</div>
