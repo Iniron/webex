@@ -2,6 +2,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%
+	int nowpage = (Integer)request.getAttribute("nowpage");
+	int firstpage = (Integer)request.getAttribute("firstpage");
+	int lastpage = (Integer)request.getAttribute("lastpage");
+	int maxpage = (Integer)request.getAttribute("maxpage");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,7 +33,7 @@
 					<td>작성날짜</td>
 					<td>조회수</td>
 				</tr>
-				<%	
+				<%				
 					if(request.getAttribute("list")!=null){
 					ArrayList<BoardDto> dtos = (ArrayList<BoardDto>)request.getAttribute("list");			
 					for(int i=0; i<dtos.size(); i++){
@@ -36,7 +42,7 @@
 					<td><%=dtos.get(i).getBid()%></td>
 					<td><%=dtos.get(i).getBname()%></td>
 					<td align="left">
-						<a href="board_content_view.do?bid=<%=dtos.get(i).getBid() %>">
+						<a href="board_content_view.do?bid=<%=dtos.get(i).getBid() %>&nowpage=<%=nowpage%>">
 						<%for(int j=0; j<dtos.get(i).getBindent(); j++){out.println("&nbsp;&nbsp;&nbsp;");}%>			
 						<%=dtos.get(i).getBtitle()%></a>
 					</td>
@@ -53,24 +59,19 @@
 				<div align="center" class="col-md-8">
 					<nav>
 						<ul class="pagination">
-					  	<% 
-							int nowpage = (Integer)request.getAttribute("nowpage");
-					  		int firstpage = (Integer)request.getAttribute("firstpage");
-				      		int lastpage = (Integer)request.getAttribute("lastpage");
-				      		
-					  		if(nowpage<=1){
-					 	%>
+					  	<% if(nowpage<=1){ %>
 						  	<li class="disabled"><span><span aria-hidden="true">&laquo;</span></span></li>
 						<% } else{ %>
 						  	<li><a href="board_list_view.do?nowpage=<%=nowpage-1%>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 						<% } 
 					    	for(int k=firstpage; k<=lastpage; k++){
+					    	if(k==maxpage+1) break; 
 					    	if(k==nowpage){ %>
 					    		<li class="active"><span><%=k%><span class="sr-only">(current)</span></span></li>	
 					    <% continue; } %>
 					    	<li><a href="board_list_view.do?nowpage=<%=k%>"><%=k%></a></li>
 					    <% } 
-					    	if(nowpage>=lastpage){
+					    	if(nowpage>=maxpage){
 					    %>
 					    	<li class="disabled"><span><span aria-hidden="true">&raquo;</span></span></li>
 					    <% } else{ %>

@@ -11,6 +11,11 @@ public class BContentCommand implements BCommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
+		
+//		if(request.getParameter("nowpage")!=null){
+//			request.setAttribute("nowpage", request.getParameter("nowpage"));
+//		}
+			
 		String bid = (String)request.getParameter("bid");
 		
 		BoardDao dao = BoardDao.getInstance();

@@ -20,6 +20,10 @@
 </head>
 <body>
 <%
+	if(request.getParameter("nowpage")!=null){
+		session.setAttribute("nowpage", request.getParameter("nowpage"));
+	}
+
 	BoardDto dto = new BoardDto();
 	dto = (BoardDto)request.getAttribute("content");
 %>
@@ -50,7 +54,7 @@
 				</tr>
 			</table>
 			<div align="right">
-				<input class="btn" type="button" value="목록" onclick="window.location.href='board_list_view.do'">
+				<input class="btn" type="button" value="목록" onclick="window.location.href='board_list_view.do?nowpage=<%=(String)session.getAttribute("nowpage")%>'">
 				<input class="btn" type="button" value="답변" onclick="window.location.href='board_reply_view.do?bid=<%=dto.getBid()%>'">
 				<input class="btn" type="button" value="수정" onclick="window.location.href='board_modify_view.do?bid=<%=dto.getBid()%>'">
 				<input class="btn" type="button" value="삭제" onclick="window.location.href='board_delete.do?bid=<%=dto.getBid()%>'">
